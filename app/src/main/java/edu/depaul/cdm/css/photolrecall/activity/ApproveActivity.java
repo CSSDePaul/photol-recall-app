@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -27,6 +29,9 @@ public class ApproveActivity extends ActionBarActivity {
     ImageView img;
 
     private static String appname;
+    private Button cancel;
+    private Button confirm;
+
 
     private Uri imgUri;
 
@@ -36,19 +41,20 @@ public class ApproveActivity extends ActionBarActivity {
         setContentView(R.layout.activity_approve);
         appname = getResources().getText(R.string.photo_dir).toString();
 
+        cancel = (Button) findViewById(R.id.buttonCancel);
+        confirm = (Button) findViewById(R.id.buttonConfirm);
         img = (ImageView) findViewById(R.id.approveImageView);
 
         sendCameraIntent();
 
         Log.d(TAG, "imgURI= " + imgUri);
 
-        img.setImageURI(imgUri);
-        img.invalidate();
-        img.postInvalidate();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        //Bitmap bit = BitmapFactory.decodeFile(imgUri.getPath());
-       // img.setImageBitmap(bit);
-
+            }
+        });
 
     }
 
