@@ -123,6 +123,7 @@ public class ApproveActivity extends ActionBarActivity {
            // imgUri = data;
             Log.d(TAG, "Intent: " + data);
             Log.d(TAG, "Intent.getData(): " + data.getExtras().get("data"));
+            Log.d(TAG, "Intent.getExtras().get()" + data.getExtras().get("uri"));
             Log.d(TAG, "imgURI: " + imgUri);
            // String path = imgUri.getPath();
             img.setImageBitmap((Bitmap) data.getExtras().get("data"));

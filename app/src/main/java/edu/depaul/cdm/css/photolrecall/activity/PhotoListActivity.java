@@ -22,13 +22,11 @@ import edu.depaul.cdm.css.photolrecall.adapter.ImageAdapter;
 
 public class PhotoListActivity extends ActionBarActivity {
 
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final String TAG = "PhotoListActivity";
 
     private ImageButton cameraButton;
     private GridView gridView;
 
-    private Uri imgUri;
 
 
     @Override
@@ -71,40 +69,6 @@ public class PhotoListActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private static Uri getOutputMediaFileUri(){
-        return Uri.fromFile(getOutputMediaFile());
-    }
-
-    private static File getOutputMediaFile(){
-
-        Environment.getExternalStorageState();
-        File mediaStorageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), TAG);
-        Log.d(TAG, "mediaStorageDir == " + mediaStorageDir.getPath() + ".exists() == " + mediaStorageDir.exists());
-        if(!mediaStorageDir.exists()){
-            if(!mediaStorageDir.mkdirs()){
-                Log.d(TAG, "Failed to create directory " + mediaStorageDir );
-                //return null;
-            }
-        }
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-        "IMG_"+ timeStamp + ".jpg");
-
-        return mediaFile;
-    }
-
-    private void sendCameraIntent(){
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-       imgUri = getOutputMediaFileUri();
-
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
-
-        startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-    }
 
     private void goToApproveActivity(){
         Intent i = new Intent(getApplicationContext(), ApproveActivity.class);
