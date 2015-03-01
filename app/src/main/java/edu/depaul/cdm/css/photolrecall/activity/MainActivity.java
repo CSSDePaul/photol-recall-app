@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.depaul.cdm.css.photolrecall.R;
 
-
+import com.firebase.client.*;
 public class MainActivity extends ActionBarActivity implements LocationListener {
 
     private static final String TAG = "";
@@ -37,11 +37,15 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
     private SupportMapFragment frag;
     private ImageButton img;
-    GoogleMap map;
-    Location location;
-    LocationManager locationManager;
-    LatLng latLng;
-    CameraPosition cam;
+    private GoogleMap map;
+    private Location location;
+    private LocationManager locationManager;
+    private LatLng latLng;
+    private CameraPosition cam;
+    private String provider;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
 
-            String provider = locationManager.getBestProvider(criteria,true);
+            provider = locationManager.getBestProvider(criteria,true);
 
             if(provider == null){
                 Log.e(TAG, "no provider found");
@@ -106,6 +110,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        location = locationManager.getLastKnownLocation(provider);
+        Log.d(TAG, "onResume");
+    }
+
+
+    @Override
     public void onLocationChanged(Location location){
         map.getMyLocation();
     }
@@ -124,11 +136,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     public void onProviderDisabled(String provider){
 
     }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
+
 
 
     @Override
@@ -149,6 +157,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_place){
+            goToPhotoListActivity();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -156,6 +167,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
     private void goToApproveActivity(){
         Intent i = new Intent(getApplicationContext(), ApproveActivity.class);
+        i.putExtra("location",latLng);
+        startActivity(i);
+    }
+
+    private void goToPhotoListActivity(){
+        Intent i = new Intent(getApplicationContext(), PhotoListActivity.class);
         startActivity(i);
     }
 
