@@ -6,7 +6,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +15,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,9 +28,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
     private static final String TAG = "";
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BTWN_UPDATES = 2 * 1000;
-    private static final float ZOOM_LEVEL = 18.0f;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 100;
+    private static final long MIN_TIME_BTWN_UPDATES = 20 * 1000;
 
     private SupportMapFragment frag;
     private ImageButton img;
@@ -41,7 +37,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     Location location;
     LocationManager locationManager;
     LatLng latLng;
-    CameraPosition cam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             }
 
             Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
             criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
 
             String provider = locationManager.getBestProvider(criteria,true);
@@ -82,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             locationManager.requestLocationUpdates(provider,MIN_TIME_BTWN_UPDATES,
                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-            //location = map.getMyLocation();
+            location = map.getMyLocation();
             location = locationManager.getLastKnownLocation(provider);
             if(location != null){
                 double lat = location.getLatitude();
@@ -95,10 +90,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             else
                 Log.e(TAG, "No location");
 
-            map.setBuildingsEnabled(true);
             map.addMarker(new MarkerOptions().position(latLng).title("Here"));
-
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } catch(Exception e){
             Log.e(TAG, e.getMessage());
         }
@@ -107,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location){
-        map.getMyLocation();
+
     }
 
     @Override
