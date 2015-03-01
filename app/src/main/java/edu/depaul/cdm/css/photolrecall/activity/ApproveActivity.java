@@ -62,6 +62,8 @@ public class ApproveActivity extends ActionBarActivity implements LocationListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Firebase ref = new Firebase("https://sizzling-fire-516.firebaseio.com/");
+
         loc= (LatLng) getIntent().getExtras().get("loc");
         setContentView(R.layout.activity_approve);
         appname = getResources().getText(R.string.photo_dir).toString();
